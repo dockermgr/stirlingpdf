@@ -185,7 +185,7 @@ __my_default_lan_address() { __ifconfig $SET_LAN_DEV | grep -w 'inet' | awk -F '
 __port() { echo "$((50000 + $RANDOM % 1000))" | grep '^' || return 1; }
 __port_in_use() { { [ -d "/etc/nginx/vhosts.d" ] && grep -wRsq "${1:-443}" "/etc/nginx/vhosts.d" || __netstat | grep -q "${1:-443}"; } && return 1 || return 0; }
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-__if_file_contains() { grep -qsR "$1" "$2" | grep -Ev '#|^$' | grep '^' || return 1; }
+__if_file_contains() { grep -sR "$1" "$2" | grep -Ev '#|^$' | grep -q '^' || return 1; }
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 __enable_ssl() { { [ "$SSL_ENABLED" = "yes" ] || [ "$SSL_ENABLED" = "true" ]; } && return 0 || return 1; }
 __ssl_certs() { [ -f "$HOST_SSL_CA" ] && [ -f "$HOST_SSL_CRT" ] && [ -f "$HOST_SSL_KEY" ] && return 0 || return 1; }
@@ -506,13 +506,13 @@ CONTAINER_DATABASE_DIR=""
 HOST_MOUNT_DATABASE_DIR=""
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Set a username and password - [user] [pass/random]
-CONTAINER_USER_NAME=""
-CONTAINER_USER_PASS=""
+CONTAINER_USER_NAME="$USER"
+CONTAINER_USER_PASS="random"
 CONTAINER_PASS_LENGTH="24"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Set container username and password enviroment name - [CONTAINER_ENV_USER_NAME=$CONTAINER_USER_NAME] [CONTAINER_ENV_PASS_NAME=$CONTAINER_USER_PASS]
-CONTAINER_ENV_USER_NAME=""
-CONTAINER_ENV_PASS_NAME=""
+CONTAINER_ENV_USER_NAME="SECURITY_INITIALLOGIN_USERNAME"
+CONTAINER_ENV_PASS_NAME="SECURITY_INITIALLOGIN_PASSWORD"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # If container has an api token set it here - [ENV_NAME] [token/random]
 CONTAINER_API_KEY_NAME=""

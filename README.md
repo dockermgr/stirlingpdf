@@ -19,17 +19,17 @@ dockermgr update stirlingpdf
 ## Install and run container
   
 ```shell
-mkdir -p "$HOME/.local/share/srv/docker/stirlingpdf/rootfs"
+mkdir -p "$HOME/.local/share/srv/docker/stirlingpdf/volumes"
 git clone "https://github.com/dockermgr/stirlingpdf" "$HOME/.local/share/CasjaysDev/dockermgr/stirlingpdf"
-cp -Rfva "$HOME/.local/share/CasjaysDev/dockermgr/stirlingpdf/rootfs/." "$HOME/.local/share/srv/docker/stirlingpdf/rootfs/"
+cp -Rfva "$HOME/.local/share/CasjaysDev/dockermgr/stirlingpdf/volumes/." "$HOME/.local/share/srv/docker/stirlingpdf/volumes/"
 docker run -d \
 --restart always \
 --privileged \
 --name casjaysdevdocker-stirlingpdf \
 --hostname stirlingpdf \
 -e TZ=${TIMEZONE:-America/New_York} \
--v "$HOME/.local/share/srv/docker/casjaysdevdocker-stirlingpdf/rootfs/data:/data:z" \
--v "$HOME/.local/share/srv/docker/casjaysdevdocker-stirlingpdf/rootfs/config:/config:z" \
+-v "$HOME/.local/share/srv/docker/casjaysdevdocker-stirlingpdf/volumes/data:/data:z" \
+-v "$HOME/.local/share/srv/docker/casjaysdevdocker-stirlingpdf/volumes/config:/config:z" \
 -p 80:80 \
 casjaysdevdocker/stirlingpdf:latest
 ```
@@ -46,8 +46,8 @@ services:
       - TZ=America/New_York
       - HOSTNAME=stirlingpdf
     volumes:
-      - "$HOME/.local/share/srv/docker/casjaysdevdocker-stirlingpdf/rootfs/data:/data:z"
-      - "$HOME/.local/share/srv/docker/casjaysdevdocker-stirlingpdf/rootfs/config:/config:z"
+      - "$HOME/.local/share/srv/docker/casjaysdevdocker-stirlingpdf/volumes/data:/data:z"
+      - "$HOME/.local/share/srv/docker/casjaysdevdocker-stirlingpdf/volumes/config:/config:z"
     ports:
       - 80:80
     restart: always
